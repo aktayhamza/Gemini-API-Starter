@@ -3,6 +3,7 @@ package com.example.geminiapistarter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -34,7 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.ai.client.generativeai.GenerativeModel
-import com.example.geminiapistarter.ui.theme.GeminiAPIStarterTheme
+import com.example.geminiapistarter.ui.theme.theme.GeminiAPIStarterTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,19 +75,23 @@ fun SummarizeScreen(
     onSummarizeClicked: (String) -> Unit = {}
 ) {
     var prompt by remember { mutableStateOf("") }
-
     Scaffold(
         bottomBar = {
-            Row(modifier = Modifier.padding(horizontal = 8.dp)) {
+            Row(modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp)) {
                 TextField(
                     value = prompt,
                     label = { Text(stringResource(R.string.summarize_label)) },
                     placeholder = { Text(stringResource(R.string.summarize_hint)) },
                     onValueChange = { prompt = it },
+                    colors = TextFieldDefaults.colors(
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+                    ),
                     modifier = Modifier
                         .weight(8f)
                 )
                 TextButton(
+                    border = BorderStroke(0.5.dp, Color.Black),
                     onClick = {
                         if (prompt.isNotBlank()) {
                             onSummarizeClicked(prompt)
@@ -104,7 +110,6 @@ fun SummarizeScreen(
 
     ) {
         Column(modifier = Modifier.padding(it)) {
-
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -144,6 +149,7 @@ fun SummarizeScreen(
                                 )
                                 Text(
                                     text = uiState.outputText,
+                                    color = Color.Yellow,
                                     modifier = Modifier.padding(horizontal = 8.dp)
                                 )
                             }
