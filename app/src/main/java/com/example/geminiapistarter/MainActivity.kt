@@ -149,7 +149,7 @@ fun SummarizeScreen(
                                 )
                                 Text(
                                     text = uiState.outputText,
-                                    color = Color.Yellow,
+                                    color = Color.Black,
                                     modifier = Modifier.padding(horizontal = 8.dp)
                                 )
                             }

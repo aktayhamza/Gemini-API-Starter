@@ -30,11 +30,13 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.geminiapistarter.components.CustomTexFieldType.CustomTextFieldBorderWidthCategory.StandardTextFieldBorderWidth
-import com.example.geminiapistarter.components.CustomTexFieldType.CustomTextFieldShapeCategory.StandardTextFieldShape
-import com.example.geminiapistarter.components.CustomTexFieldType.CustomTextFieldWidthSizeCategory.StandardTextFieldWidth
+import com.example.geminiapistarter.components.GeminiTexFieldType.GeminiTextField
+import com.example.geminiapistarter.components.GeminiTexFieldType.GeminiTextFieldBorderWidthCategory.StandardTextFieldBorderWidth
+import com.example.geminiapistarter.components.GeminiTexFieldType.GeminiTextFieldShapeCategory.StandardTextFieldShape
+import com.example.geminiapistarter.components.GeminiTexFieldType.GeminiTextFieldWidthSizeCategory.StandardTextFieldWidth
 import com.example.geminiapistarter.ui.theme.MontserratLabelStyle
 import com.example.geminiapistarter.ui.theme.MontserratTinyStyle
 import com.example.geminiapistarter.ui.theme.theme.Gray10
@@ -42,8 +44,9 @@ import com.example.geminiapistarter.ui.theme.theme.Gray100
 import com.example.geminiapistarter.ui.theme.theme.Gray30
 import com.example.geminiapistarter.ui.theme.theme.Gray50
 import com.example.geminiapistarter.ui.theme.theme.Gray90
+import com.example.geminiapistarter.ui.theme.theme.Pink40
 
-object CustomTexFieldType {
+object GeminiTexFieldType {
     @Composable
     fun customTextFieldColor(
         focusedTextColor: Color = Gray100,
@@ -104,21 +107,21 @@ object CustomTexFieldType {
         errorSuffixColor = focusedTextColor
     )
 
-    object CustomTextFieldWidthSizeCategory {
+    object GeminiTextFieldWidthSizeCategory {
         val StandardTextFieldWidth: Dp = 350.dp
     }
 
-    object CustomTextFieldBorderWidthCategory {
+    object GeminiTextFieldBorderWidthCategory {
         val StandardTextFieldBorderWidth: Dp = 1.dp
     }
 
-    object CustomTextFieldShapeCategory {
+    object GeminiTextFieldShapeCategory {
         val StandardTextFieldShape = RoundedCornerShape(10.dp)
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun SATextField(
+    fun GeminiTextField(
         value: String,
         onValueChange: (String) -> Unit,
         modifier: Modifier = Modifier,
@@ -245,3 +248,17 @@ object CustomTexFieldType {
         }
     }
 }
+
+@Preview
+@Composable
+fun GeminiTextFieldPreview() {
+    GeminiTextField(
+        value = "Hello, World!",
+        onValueChange = {},
+        helpText = "Help text",
+        textStyle = MontserratLabelStyle.Regular.copy(
+            color = Pink40
+        )
+    )
+}
+
