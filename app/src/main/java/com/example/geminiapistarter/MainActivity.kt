@@ -35,8 +35,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.geminiapistarter.components.GeminiTexFieldType
+import com.example.geminiapistarter.ui.theme.MontserratLabelStyle
 import com.google.ai.client.generativeai.GenerativeModel
 import com.example.geminiapistarter.ui.theme.theme.GeminiAPIStarterTheme
+import com.example.geminiapistarter.ui.theme.theme.Gray50
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,17 +81,18 @@ fun SummarizeScreen(
     Scaffold(
         bottomBar = {
             Row(modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp)) {
-                TextField(
+                GeminiTexFieldType.GeminiTextField(
                     value = prompt,
-                    label = { Text(stringResource(R.string.summarize_label)) },
+                    label = { Text(stringResource(R.string.summarize_label),
+                        style = MontserratLabelStyle.Regular.copy(
+                            color = Gray50
+                        )) },
                     placeholder = { Text(stringResource(R.string.summarize_hint)) },
                     onValueChange = { prompt = it },
-                    colors = TextFieldDefaults.colors(
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
-                    ),
+                    colors = GeminiTexFieldType.customTextFieldColor(),
                     modifier = Modifier
                         .weight(8f)
+                        .align(Alignment.CenterVertically)
                 )
                 TextButton(
                     border = BorderStroke(0.5.dp, Color.Black),
