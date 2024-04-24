@@ -3,12 +3,17 @@ package com.example.geminiapistarter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Person
@@ -39,6 +44,10 @@ import com.example.geminiapistarter.ui.theme.MontserratLabelStyle
 import com.google.ai.client.generativeai.GenerativeModel
 import com.example.geminiapistarter.ui.theme.theme.GeminiAPIStarterTheme
 import com.example.geminiapistarter.ui.theme.theme.Gray50
+import com.example.geminiapistarter.ui.theme.theme.NavyBlue10
+import com.example.geminiapistarter.ui.theme.theme.NavyBlue20
+import com.example.geminiapistarter.ui.theme.theme.Pink40
+import com.example.geminiapistarter.ui.theme.theme.Pink80
 
 class MainActivity : ComponentActivity() {
 
@@ -128,7 +137,8 @@ fun SummarizeScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(2.dp),
+                    .padding(2.dp)
+                    .background(Color.White),
                 contentAlignment = Alignment.BottomStart
             ) {
                 Column(
@@ -157,16 +167,17 @@ fun SummarizeScreen(
                         }
 
                         is SummarizeUiState.Success -> {
-                            Row(modifier = Modifier.padding(all = 8.dp)) {
+                            Row(modifier = Modifier.padding(horizontal = 8.dp, vertical = 24.dp).background(
+                                NavyBlue10, shape = CutCornerShape(4.dp)).fillMaxWidth()) {
                                 Icon(
                                     Icons.Outlined.Person,
                                     contentDescription = "Person Icon",
-                                    modifier = Modifier.padding(vertical = 16.dp)
+                                    modifier = Modifier.padding(vertical = 24.dp, horizontal = 4.dp)
                                 )
                                 Text(
                                     text = uiState.outputText,
                                     color = Color.Black,
-                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp),
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 24.dp),
                                     style = MontserratLabelStyle.Medium.copy(
                                         color = Gray50
                                     )

@@ -37,7 +37,7 @@ fun GeminiAPIStarterTheme(
             window.navigationBarColor = Transparent.toArgb()
             window.statusBarColor = Transparent.toArgb()
             WindowCompat.getInsetsController(window, view).apply {
-                isAppearanceLightStatusBars = true
+                isAppearanceLightStatusBars = false
                 isAppearanceLightNavigationBars = false
             }
         }
