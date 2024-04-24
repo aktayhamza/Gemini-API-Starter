@@ -3,4 +3,5 @@
     <string name="action_go">Go</string>
     <string name="summarize_label">Enter yours prompt</string>
     <string name="summarize_hint">Enter text or a URL to summarize</string>
+    <string name="loading_text">Please wait for answer…</string>
 </resources>

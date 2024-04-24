@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -37,6 +38,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.geminiapistarter.components.GeminiButtonType.GeminiButton
 import com.example.geminiapistarter.components.GeminiTexFieldType
@@ -46,8 +48,11 @@ import com.example.geminiapistarter.ui.theme.theme.GeminiAPIStarterTheme
 import com.example.geminiapistarter.ui.theme.theme.Gray50
 import com.example.geminiapistarter.ui.theme.theme.NavyBlue10
 import com.example.geminiapistarter.ui.theme.theme.NavyBlue20
+import com.example.geminiapistarter.ui.theme.theme.NavyBlue80
 import com.example.geminiapistarter.ui.theme.theme.Pink40
 import com.example.geminiapistarter.ui.theme.theme.Pink80
+import com.example.geminiapistarter.ui.theme.theme.PurpleGrey40
+import com.example.geminiapistarter.ui.theme.theme.PurpleGrey80
 
 class MainActivity : ComponentActivity() {
 
@@ -75,7 +80,7 @@ class MainActivity : ComponentActivity() {
 internal fun SummarizeRoute(
     summarizeViewModel: SummarizeViewModel = viewModel()
 ) {
-    val summarizeUiState by summarizeViewModel.uiState.collectAsState()
+    val summarizeUiState by summarizeViewModel.uiStates.collectAsState()
     SummarizeScreen(summarizeUiState, onSummarizeClicked = { inputText ->
         summarizeViewModel.summarize(inputText)
     })
@@ -84,7 +89,7 @@ internal fun SummarizeRoute(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SummarizeScreen(
-    uiState: SummarizeUiState = SummarizeUiState.Initial,
+    uiStates: List<SummarizeUiState>,
     onSummarizeClicked: (String) -> Unit = {}
 ) {
     var prompt by remember { mutableStateOf("") }
@@ -150,57 +155,87 @@ fun SummarizeScreen(
                         .verticalScroll(rememberScrollState())
                 ) {
 
-                    when (uiState) {
-                        SummarizeUiState.Initial -> {
-                            // Nothing is shown
-                        }
+                    Column(modifier = Modifier.padding(it)) {
+                        for (uiState in uiStates) {
+                            when (uiState) {
+                                SummarizeUiState.Initial -> {
+                                }
 
-                        SummarizeUiState.Loading -> {
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier
-                                    .padding(all = 8.dp)
-                                    .align(Alignment.CenterHorizontally)
-                            ) {
-                                CircularProgressIndicator()
-                            }
-                        }
+                                SummarizeUiState.Loading -> {
+                                    Box(
+                                        contentAlignment = Alignment.TopStart,
+                                        modifier = Modifier
+                                            .padding(all = 8.dp)
+                                            .align(Alignment.Start)
+                                            .fillMaxWidth()
+                                            .background(PurpleGrey80, shape = CutCornerShape(4.dp))
+                                    ) {
+                                        Icon(
+                                            Icons.Outlined.Info,
+                                            contentDescription = "Answer Icon",
+                                            modifier = Modifier.padding(
+                                                vertical = 24.dp,
+                                                horizontal = 4.dp
+                                            )
+                                        )
+                                        Text(
+                                            text = stringResource(id = R.string.loading_text),
+                                            style = MontserratLabelStyle.Regular.copy(
+                                                color = Color.Black
+                                            ),
+                                            modifier = Modifier.padding(
+                                                horizontal = 40.dp,
+                                                vertical = 24.dp
+                                            )
+                                        )
+                                    }
+                                }
 
-                        is SummarizeUiState.Success -> {
-                            Row(modifier = Modifier.padding(horizontal = 8.dp, vertical = 24.dp).background(
-                                NavyBlue10, shape = CutCornerShape(4.dp)).fillMaxWidth()) {
-                                Icon(
-                                    Icons.Outlined.Person,
-                                    contentDescription = "Person Icon",
-                                    modifier = Modifier.padding(vertical = 24.dp, horizontal = 4.dp)
-                                )
-                                Text(
-                                    text = uiState.outputText,
-                                    color = Color.Black,
-                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 24.dp),
-                                    style = MontserratLabelStyle.Medium.copy(
-                                        color = Gray50
+                                is SummarizeUiState.Success -> {
+                                    // Başarılı durumda yapılacak işlemler
+                                    Row(
+                                        modifier = Modifier
+                                            .padding(horizontal = 8.dp, vertical = 24.dp)
+                                            .background(
+                                                NavyBlue10, shape = CutCornerShape(4.dp)
+                                            )
+                                            .fillMaxWidth()
+                                    ) {
+                                        Icon(
+                                            Icons.Outlined.Person,
+                                            contentDescription = "Person Icon",
+                                            modifier = Modifier.padding(
+                                                vertical = 24.dp,
+                                                horizontal = 4.dp
+                                            )
+                                        )
+                                        Text(
+                                            text = uiState.outputText,
+                                            color = Color.Black,
+                                            modifier = Modifier.padding(
+                                                horizontal = 8.dp,
+                                                vertical = 24.dp
+                                            ),
+                                            style = MontserratLabelStyle.Medium.copy(
+                                                color = Gray50
+                                            )
+                                        )
+                                    }
+                                }
+
+                                is SummarizeUiState.Error -> {
+                                    // Hata durumunda yapılacak işlemler
+                                    Text(
+                                        text = uiState.errorMessage,
+                                        color = Color.Red,
+                                        modifier = Modifier.padding(all = 8.dp)
                                     )
-                                )
+                                }
                             }
-                        }
-
-                        is SummarizeUiState.Error -> {
-                            Text(
-                                text = uiState.errorMessage,
-                                color = Color.Red,
-                                modifier = Modifier.padding(all = 8.dp)
-                            )
                         }
                     }
                 }
             }
         }
     }
-}
-
-@Composable
-@Preview(showSystemUi = true)
-fun SummarizeScreenPreview() {
-    SummarizeScreen()
 }

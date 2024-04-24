@@ -9,27 +9,25 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SummarizeViewModel(
-        private val generativeModel: GenerativeModel
+    private val generativeModel: GenerativeModel
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<SummarizeUiState> =
-            MutableStateFlow(SummarizeUiState.Initial)
-    val uiState: StateFlow<SummarizeUiState> =
-            _uiState.asStateFlow()
+    private val _uiStates: MutableStateFlow<List<SummarizeUiState>> =
+        MutableStateFlow(emptyList())
+    val uiStates: StateFlow<List<SummarizeUiState>> =
+        _uiStates.asStateFlow()
 
     fun summarize(inputText: String) {
-        _uiState.value = SummarizeUiState.Loading
-
         val prompt = "Summarize the following text for me: $inputText"
 
         viewModelScope.launch {
             try {
                 val response = generativeModel.generateContent(prompt)
                 response.text?.let { outputContent ->
-                    _uiState.value = SummarizeUiState.Success(outputContent)
+                    _uiStates.value += SummarizeUiState.Success(outputContent)
                 }
             } catch (e: Exception) {
-                _uiState.value = SummarizeUiState.Error(e.localizedMessage ?: "")
+                _uiStates.value += SummarizeUiState.Error(e.localizedMessage ?: "")
             }
         }
     }
