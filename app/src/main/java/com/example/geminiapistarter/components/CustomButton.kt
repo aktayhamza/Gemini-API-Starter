@@ -100,7 +100,7 @@ object GeminiButtonType {
     )
 
     @Composable
-    fun SAButton(
+    fun GeminiButton(
         modifier: Modifier = Modifier,
         size: GeminiButtonSize = GeminiButtonSize(),
         enabled: Boolean = true,
