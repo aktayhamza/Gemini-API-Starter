@@ -72,7 +72,6 @@ object GeminiButtonType {
 
     object GeminiButtonHeightSizeCategory {
         val StandardButtonHeight: Dp = 48.dp
-        val LargeButtonHeight: Dp = 54.dp
     }
 
     object GeminiButtonWidthSizeCategory {
@@ -84,9 +83,7 @@ object GeminiButtonType {
     }
 
     object GeminiButtonShapeCategory {
-        val SmallShape = RoundedCornerShape(4.dp)
         val StandardButtonShape = RoundedCornerShape(10.dp)
-        val LargeButtonShape = RoundedCornerShape(22.dp)
     }
 
     data class GeminiButtonSize(

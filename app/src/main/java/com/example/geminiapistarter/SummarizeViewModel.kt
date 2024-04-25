@@ -12,22 +12,24 @@ class SummarizeViewModel(
     private val generativeModel: GenerativeModel
 ) : ViewModel() {
 
-    private val _uiStates: MutableStateFlow<List<SummarizeUiState>> =
-        MutableStateFlow(emptyList())
-    val uiStates: StateFlow<List<SummarizeUiState>> =
-        _uiStates.asStateFlow()
+    private val _uiState: MutableStateFlow<SummarizeUiState> =
+        MutableStateFlow(SummarizeUiState.Initial)
+    val uiState: StateFlow<SummarizeUiState> =
+        _uiState.asStateFlow()
 
     fun summarize(inputText: String) {
+        _uiState.value = SummarizeUiState.Loading
+
         val prompt = "Summarize the following text for me: $inputText"
 
         viewModelScope.launch {
             try {
                 val response = generativeModel.generateContent(prompt)
                 response.text?.let { outputContent ->
-                    _uiStates.value += SummarizeUiState.Success(outputContent)
+                    _uiState.value = SummarizeUiState.Success(outputContent)
                 }
             } catch (e: Exception) {
-                _uiStates.value += SummarizeUiState.Error(e.localizedMessage ?: "")
+                _uiState.value = SummarizeUiState.Error(e.localizedMessage ?: "")
             }
         }
     }

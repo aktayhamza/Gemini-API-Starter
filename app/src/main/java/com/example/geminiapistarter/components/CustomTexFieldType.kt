@@ -51,8 +51,6 @@ object GeminiTexFieldType {
     fun customTextFieldColor(
         focusedTextColor: Color = Gray100,
         unfocusedTextColor: Color = Gray90,
-        focusedPlaceholderColor: Color = Gray50,
-        unfocusedPlaceholderColor: Color = Gray50,
         selectionColors: TextSelectionColors = TextSelectionColors(
             handleColor = focusedTextColor,
             backgroundColor = focusedTextColor.copy(0.5f)
